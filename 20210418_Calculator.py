@@ -6,7 +6,8 @@ class Calculator0(object):
     def evaluate(self, string):
         return eval(string)
 
-class Calculator(object):
+# () * ()일경우 오류남
+class Calculator00(object):
     def evaluate(self, string):
         str = string.split()
         if string.count('(') > 0:
@@ -35,6 +36,41 @@ class Calculator(object):
             del str[oper_index:oper_index+2]
             str[oper_index-1] = num1
         return float(str[0])
+    
+class Calculator(object):
+    def evaluate(self, string):
+        strr = string.split()
+        if string.count('(') > 0:
+            while strr.count('(') != 0:
+                for idx, i in enumerate(strr):
+                    if i == '(':
+                        o = idx
+                    elif i == ')':
+                        c = idx
+                        break
+                tmp = strr[o+1:c]
+                tmp2 = self.evaluate(' '.join([str(i) for i in tmp]))
+                del strr[o:c]
+                strr[o] = tmp2
+        while len(strr) != 1:
+            if strr.count('/') > 0 and strr.count('*') > 0:
+                oper_index = min(strr.index('/'), strr.index('*'))
+            elif strr.count('/') > 0:
+                oper_index = strr.index('/')
+            elif strr.count('*') > 0:
+                oper_index = strr.index('*')
+            else:
+                oper_index = 1
+            num1 = float(strr[oper_index-1])
+            num2 = float(strr[oper_index+1])
+            oper = strr[oper_index]
+            if oper == '+': num1 += num2
+            elif oper == '-': num1 -= num2
+            elif oper == '*': num1 *= num2
+            elif oper == '/': num1 /= num2
+            del strr[oper_index:oper_index+2]
+            strr[oper_index-1] = num1
+        return float(strr[0])
 
 # 다른 사람의 풀이
 from operator import add, sub, mul, div
