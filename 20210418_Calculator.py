@@ -42,12 +42,8 @@ class Calculator(object):
         strr = string.split()
         if string.count('(') > 0:
             while strr.count('(') != 0:
-                for idx, i in enumerate(strr):
-                    if i == '(':
-                        o = idx
-                    elif i == ')':
-                        c = idx
-                        break
+                c = strr.index(')')
+                o = c - strr[:c][::-1].index('(') - 1
                 tmp = strr[o+1:c]
                 tmp2 = self.evaluate(' '.join([str(i) for i in tmp]))
                 del strr[o:c]
