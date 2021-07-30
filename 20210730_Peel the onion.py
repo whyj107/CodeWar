@@ -1,14 +1,19 @@
 # Peel the onion
 # https://www.codewars.com/kata/60fa9511fb42620019966b35/train/python
 
-# 나의 풀이
+# 풀이
+def peel_the_onion1(s, d):
+    return [i**d - (i - 2) ** d if i > 1 else 1 for i in range(s, 0, -2)]
+
 def peel_the_onion(s, d):
-    tmp = pow(s, d)
-    print(tmp)
-    return [tmp]
+    i = [2, 1][s % 2]
+    lst = []
+    while i <= s:
+        lst.append(i ** d - sum(lst))
+        i += 2
+    return lst[::-1]
 
 sample_test_cases = [
-#        s  d     result
     (1, [
         (1, 1,    [1]),
         (2, 1,    [2]),
@@ -39,6 +44,6 @@ sample_test_cases = [
     ]),
 ]
 
-for _, test_cases in sample_test_cases:
-    for s, d, ex in test_cases:
-        print(peel_the_onion(s, d), ex)
+for d, test_cases in sample_test_cases:
+        for s, d, expected in test_cases:
+            print(peel_the_onion(s, d), expected)
