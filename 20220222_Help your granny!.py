@@ -1,7 +1,7 @@
 # Help your granny!
 # https://www.codewars.com/kata/5536a85b6ed4ee5a78000035/train/python
 
-# 나의 풀이
+# 나의 풀이 : 피타고라스 이용한 것
 def tour(friends, friend_towns, home_to_town_distances):
     towns = {i: j for i, j in friend_towns}
     result, before = 0, 0
