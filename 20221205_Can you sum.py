@@ -11,8 +11,6 @@ def f0(n:int) -> int:
     return result % m
 
 # 다른 사람의 풀이
-# sigma 2^k = 2^(k+1)-1
-# sigma k^2 = n(n+1)(2n+1)/6
 M = 10**9 + 7
 def f(n:int) -> int:
     # g(x) = sum(x^k, k = 0..n)
