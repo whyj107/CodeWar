@@ -18,40 +18,35 @@
 # ])
 
 # My Code
+from itertools import product
 class Sudoku(object):
     def __init__(self, data):
         self.data = data
-        self.len = max(len(i) for i in self.data)
-        self.square_len = int(self.len**0.5)
-        self.nums = set(range(1, self.len + 1))
+        # N 구하기
+        self.n = max(len(i) for i in self.data)
+        # 사각형 크기
+        self.s_l = int(self.n**0.5)
+        self.nums = set(range(1, self.n + 1))
 
     def is_valid(self):
         # 사이즈 검사
-        if False in [len(i) == self.len for i in self.data]:
-            return False
+        if not all([len(i) == self.n for i in self.data]): return False
 
         # 데이터 타입 검사
-        if False in [True if type(j) == type(1) else False for i in self.data for j in i]:
+        if not all([True if type(j) == type(1) else False for i in self.data for j in i]):
             return False
     
-        # set을 사용하면 순서대로 정렬이 된다. 정렬된 것들과 nums을 비교하여 같으면 True 다르면 False
         # 가로줄 검사
-        if False in [set(i) == self.nums for i in self.data]:
-            return False
+        if not all([set(i) == self.nums for i in self.data]): return False
 
         # 세로줄 검사
-        if False in [set(i) == self.nums for i in zip(*self.data)]:
-            return False
+        if not all([set(i) == self.nums for i in zip(*self.data)]): return False
 
+        squares = [set(self.data[x+i][y+j]
+                    for x, y in product(range(0, self.s_l), repeat=2)) == self.nums
+                    for i, j in product(range(0, self.n, self.s_l), repeat=2)]
         # 사각형 검사
-        squares = [{self.data[i][j]
-                    for i in range(y * self.square_len, y * self.square_len + self.square_len)
-                    for j in range(x * self.square_len, x * self.square_len + self.square_len)} == self.nums
-                    for x in range(0, self.square_len)
-                    for y in range(0, self.square_len)]
-        print(squares)
-        if False in squares:
-            return False
+        if not all(squares): return False
 
         return True
 
