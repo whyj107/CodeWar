@@ -26,25 +26,22 @@
 #                                    [3, 0, 0, 4, 8, 1, 1, 7, 9]]), False);
 
 # My Code
+from itertools import product
 def valid_solution(board):
     nums = set(range(1, 10))
     # 가로줄 검사
-    if False in [set(i) == nums for i in board]:
+    if not all([set(i) == nums for i in board]):
         return False
 
     # 세로줄 검사
-    if False in [set(i) == nums for i in zip(*board)]:
+    if not all([set(i) == nums for i in zip(*board)]):
         return False
 
-    squares = [{board[i][j]
-                for i in range(y * 3, y * 3 + 3)
-                for j in range(x * 3, x * 3 + 3)} == nums
-                for x in range(0, 3)
-                for y in range(0, 3)]
+    squares = [set(board[x+i][y+j]
+               for i, j in product([0, 1, 2], repeat=2)) == nums
+               for x, y in product([0, 3, 6], repeat=2)]
     # 3x3 검사
-    if False in squares:
-        return False
-
+    if not all(squares): return False
     return True
 
 if __name__=='__main__':
