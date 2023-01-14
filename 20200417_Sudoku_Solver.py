@@ -29,93 +29,28 @@
 #             [3,4,5,2,8,6,1,7,9]]
 
 # My Code
-zero_index = []
-idx = 0
-END_FLAG = False
-
 def sudoku(puzzle):
-    global zero_index, idx, END_FLAG
+    # 0인 것들 찾아서 저장
+    board = [(r, c) for r in range(9) for c in range(9) if not puzzle[r][c]]
+    for row, col in board:
+        # 0: 0~2, 3: 3~5, 6: 6~8
+        rr, cc = (row // 3) * 3, (col // 3) * 3
+        
+        # 가로, 세로, 3x3 숫자 확인
+        sero = {puzzle[r][col] for r in range(9)}
+        garo = {puzzle[row][c] for c in range(9)}
+        three = {puzzle[rr+r][cc+c] for r in range(3) for c in range(3)}
 
-    # 반복 실행 막음
-    if len(zero_index) < 1:
-        # 여러가지 케이스 실행 시 END_FLAG가 True로 있으므로 END_FLAG를 False로 변경
-        END_FLAG = False
-        # 0인 인덱스만 찾아서 zero_index에 저장
-        for i in range(9):
-            for j in range(9):
-                if puzzle[i][j] == 0:
-                    zero_index.append([i, j])
+        # 숫자 확인
+        use = {1,2,3,4,5,6,7,8,9} - (sero | garo | three)
 
-    # idx가 zero_index의 길이 만큼 같다면 모두 다 한 것이므로 END_FLAG를 True로 변경
-    if idx == len(zero_index):
-        END_FLAG = True
-        # idx와 zero_index를 초기화
-        idx = 0
-        zero_index = []
-        return puzzle
+        # 1개 비면 그 숫자 채워 넣기
+        if len(use) == 1:
+            puzzle[row][col] = use.pop()
+            # 재귀로 계속해서 찾음
+            return sudoku(puzzle)
+    return puzzle
 
-    # 검증을 통해 숫자를 구함
-    a, b = zero_index[idx]
-    promise = promising(puzzle, [a, b])
-
-    # 숫자 리스트들을 대입시켜 나가면서 검증
-    for p in promise:
-        puzzle[a][b] = p
-        idx += 1
-        sudoku(puzzle)
-        # END_FLAG가 True이면 끝
-        if END_FLAG:
-            return puzzle
-    # END_FLAG가 False이면 정답이 아니라는 것으로 원상태로 되돌림
-    if END_FLAG == False:
-        idx -= 1
-        puzzle[a][b] = 0
-
-def promising(puzzle, zero):
-    a, b = zero
-
-    # 1 ~ 9까지 숫자 리스트 만듬
-    nums = list(map(int, range(1, 10)))
-
-    # 가로 세로 확인
-    for i in range(9):
-        # 가로 확인하여 리스트에 숫자가 존재하면 지움
-        if puzzle[a][i] in nums:
-            nums.remove(puzzle[a][i])
-        # 세로 확인하여 리스트에 숫자가 존재하면 지움
-        if puzzle[i][b] in nums:
-            nums.remove(puzzle[i][b])
-
-    # 3x3 확인
-    if len(nums) > 0:
-        rt = (a // 3) * 3
-        ct = (b // 3) * 3
-        for i in range(rt, rt + 3):
-            for j in range(ct, ct + 3):
-                if puzzle[i][j] in nums:
-                    nums.remove(puzzle[i][j])
-    # 남은 숫자들 리턴
-    return nums
-# -------------------------------------------------------------------------------------------------
-# Warriors Code
-from itertools import product
-
-def possibles_(puzzle, x, y):
-    a, b = 3*(x/3), 3*(y/3)
-    square = set([puzzle[r][c] for r, c in product(range(a, a + 3), range(b, b + 3))])
-    row = set(puzzle[x])
-    col = set(zip(*puzzle)[y])
-    return set(range(1,10)).difference(square.union(row).union(col))
-
-def sudoku_(puzzle):
-    z = [(r,c) for (r,c) in product(range(9),range(9)) if puzzle[r][c] == 0]
-    if z == []:
-        return puzzle
-    for (r,c) in z:
-        p = possibles_(puzzle, r, c)
-        if len(p) == 1:
-            puzzle[r][c] = p.pop()
-    return sudoku_(puzzle)
 # -------------------------------------------------------------------------------------------------
 if __name__=='__main__':
     answer = sudoku([[5, 3, 0, 0, 7, 0, 0, 0, 0],
