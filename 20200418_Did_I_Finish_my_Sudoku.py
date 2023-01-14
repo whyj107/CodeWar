@@ -27,21 +27,20 @@
 # My Code
 from itertools import product
 def done_or_not(board):
-    for i in range(9):
-        # 가로 값들
-        row = board[i]
-        # 세로 값들
-        col = list(map(list, zip(*board)))[i]
-        # 3x3 가로 시작 값
-        rt = 3 * (i // 3)
-        for j in range(9):
-            # 3x3 세로 시작 값
-            ct = 3 * (j // 3)
-            # 3x3 값들
-            reg = [board[r][c] for r, c in product(range(rt, rt + 3), range(ct, ct + 3))]
-            # count를 이용하여 1개 이상일 경우 Try again! 반환
-            if row.count(j + 1) > 1 or col.count(j + 1) > 1 or reg.count(j + 1) > 1:
-                return 'Try again!'
+    chk = {i for i in range(1, 10)}
+    # 가로
+    for r in range(9):
+        if {*board[r]} != chk: 
+            return 'Try again!'
+    # 세로
+    for c in zip(*board):
+        if {*c} != chk:
+            return 'Try again!'
+    # 3x3
+    for r, c in product([0, 3, 6], repeat=2):
+        three = sum([board[r+i][c:c+3] for i in range(3)], [])
+        if {*three} != chk: 
+            return 'Try again!'
     return 'Finished!'
 
 # Warrios
