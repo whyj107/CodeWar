@@ -22,62 +22,6 @@
 # test.assert_equals(solution(1889),'MDCCCLXXXIX', "solution(1889),'MDCCCLXXXIX'")
 # test.assert_equals(solution(1989),'MCMLXXXIX', "solution(1989),'MCMLXXXIX'")
 
-# My Code
-def solution0(n):
-    roman = {1: 'I', 5: 'V', 10: 'X', 50: 'L', 100: 'C', 500: 'D', 1000: 'M'}
-    answer = ''
-    if n in roman:
-        return roman[n]
-    while n != 0:
-        if n >= 1000:
-            answer += roman[1000]
-            n -= 1000
-        elif n >= 900:
-            answer += (roman[100] + roman[1000])
-            n -= 900
-        elif n >= 500:
-            answer += roman[500]
-            n -= 500
-        elif n >= 400:
-            answer += (roman[100] + roman[500])
-            n -= 400
-        elif n >= 100:
-            answer += roman[100]
-            n -= 100
-        elif n >= 90:
-            answer += (roman[10] + roman[100])
-            n -= 90
-        elif n >= 50:
-            answer += roman[50]
-            n -= 50
-        elif n >= 40:
-            answer += (roman[10] + roman[50])
-            n -= 40
-        elif n >= 10:
-            answer += roman[10]
-            n -= 10
-        elif n >= 9:
-            answer += (roman[1] + roman[10])
-            n -= 9
-        elif n >= 5:
-            answer += roman[5]
-            n -= 5
-        elif n == 4:
-            answer += (roman[1] + roman[5])
-            n -= 4
-        else:
-            answer += roman[1]
-            n -= 1
-    return answer
-
-# Warriors Code
-vals = zip(('M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'),
-           (1000, 900, 500,  400, 100,   90,  50,   40,  10,    9,   5,    4,   1))
-
-def solution1(n):
-    if n == 0: return ""
-    return next(c + solution1(n-v) for c,v in vals if v <= n)
-
 def solution(n):
     roman = {1: 'I', 4: 'IV', 5: 'V', 9:'IX',
              10: 'X', 40: 'XL', 50: 'L', 90: 'XC',
