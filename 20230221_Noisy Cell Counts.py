@@ -3,13 +3,6 @@
 
 # 나의 풀이
 # 문제를 이해 못하겠음
-def cleaned_counts_(data):
-    for i in range(0, len(data)-1):
-        if data[i+1] < data[i]:
-            data[i+1] = data[i]
-            break
-
-    return data
 
 # 다른 사람의 풀이
 # accumulate : 누적된 합을 뽑는 것
