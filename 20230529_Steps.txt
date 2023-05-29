@@ -1,0 +1,9 @@
+# Steps
+# https://www.codewars.com/kata/6473603854720900496e1c82/train/python
+
+# 푸는 공식이 있는 문제
+from math import isqrt
+def step(x, y):
+    n = abs(x - y)
+    k = isqrt(n-1) if n else 0
+    return 2 * k + (n > k*(k+1))
